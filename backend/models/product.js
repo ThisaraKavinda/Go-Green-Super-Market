@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const ProductSchema = new Schema({
-  name: {
+  specificName: {
     required: true,
     type: String,
   },
-  type: {
+  genericName: {
     required: true,
     type: String,
   },
@@ -22,17 +22,13 @@ const ProductSchema = new Schema({
   image: {
     type: String,
   },
-  availability: {
+  quantity: {
     required: true,
     type: String,
   },
   description: {
     type: String,
   },
-  stock: {
-    type: String,
-    required: true,
-  }
 });
 
 export const Product = mongoose.model("products", ProductSchema);

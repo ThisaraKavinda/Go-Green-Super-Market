@@ -3,15 +3,47 @@ import "../../assests/js/main.js";
 import Select from "react-select";
 import DragAndDropZone from "../../componants/DragAndDropZone/DragAndDropZone.js";
 import Layout from "../../componants/Layout/Layout.js";
+import { addProduct } from "../../controllers/product.js";
+import swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
-  const [value, setValue] = useState("");
-  const [isValid, setIsValid] = useState(true);
+  // {
+  //   specificName: "",
+  //   genericName: "",
+  //   category: "",
+  //   price: "",
+  //   quantity: "",
+  //   description: "",
+  // }
+
+  const navigate = useNavigate();
+
+  const [item, setItem] = useState({});
 
   const handleChange = (e) => {
-    const newValue = e.target.value;
-    setValue(newValue);
-    setIsValid(newValue !== "");
+    setItem((item) => ({ ...item, [e.target.name]: e.target.value }));
+  };
+
+  const handleAddItem = () => {
+    console.log(item);
+    addProduct(item)
+      .then((res) => {
+        swal.fire(
+          "Successfully added",
+          "Product successfully logged",
+          "success"
+        );
+        navigate("/products");
+      })
+      .catch((err) => {
+        swal.fire(
+          "Error occurred",
+          "Error occurred while we trying to add the product. please try again",
+          "error"
+        );
+        return;
+      });
   };
 
   return (
@@ -50,10 +82,9 @@ const AddProduct = () => {
                     <h5 class="card-title">Fill this form to add a product</h5>
                     <form
                       class="row g-3 needs-validation"
-                      noValidate
                       onSubmit={(e) => {
                         e.preventDefault();
-                        setIsValid(value !== "");
+                        handleAddItem();
                       }}
                     >
                       <div class="col-12">
@@ -62,18 +93,28 @@ const AddProduct = () => {
                         </label>
                         <input
                           type="text"
+                          className={`form-control`}
+                          id="specificName"
+                          onChange={handleChange}
+                          placeholder="Name"
+                          required
+                          name="specificName"
+                        />
+                        {/* <input
+                          type="text"
                           className={`form-control ${
-                            isValid ? "is-valid" : "is-invalid"
+                            true ? "is-valid" : "is-invalid"
                           }`}
                           id="specificName"
                           onChange={handleChange}
                           placeholder="Name"
                           required
-                        />
-                        <div class="valid-feedback">Looks good!</div>
+                          name="specificName"
+                        /> */}
+                        {/* <div class="valid-feedback">Looks good!</div>
                         <div class="invalid-feedback">
                           Please provide a valid city.
-                        </div>
+                        </div> */}
                       </div>
                       <div class="col-12">
                         <label for="genericName" class="form-label">
@@ -85,6 +126,8 @@ const AddProduct = () => {
                           id="genericName"
                           placeholder="Generic Name"
                           required
+                          name="genericName"
+                          onChange={handleChange}
                         />
                         <div class="valid-feedback">Looks good!</div>
                       </div>
@@ -92,12 +135,25 @@ const AddProduct = () => {
                         <label for="category" class="form-label">
                           Category
                         </label>
-                        <Select
-                          value={"d"}
+                        <select
+                          class="form-select"
+                          aria-label="Default select example"
+                          name="category"
                           onChange={handleChange}
-                          options={["d", "dd"]}
-                          id="category"
-                        />
+                        >
+                          <option value="Bakery">Bakery</option>
+                          <option value="Beverage">Beverage</option>
+                          <option value="Nonfood & Pharmacy">
+                            Nonfood & Pharmacy
+                          </option>
+                          <option value="Produce & Floral">
+                            Produce & Floral
+                          </option>
+                          <option value="Prepared Foods">Prepared Foods</option>
+                          <option value="Household items">
+                            Household items
+                          </option>
+                        </select>
                         <div class="invalid-feedback">
                           Please provide a valid city.
                         </div>
@@ -114,6 +170,9 @@ const AddProduct = () => {
                             aria-label="Unit price"
                             aria-describedby="basic-addon2"
                             id="price"
+                            name="price"
+                            onChange={handleChange}
+                            required
                           />
                           <span class="input-group-text" id="basic-addon2">
                             .00 LKR
@@ -133,6 +192,8 @@ const AddProduct = () => {
                           id="quantity"
                           placeholder="Quantity"
                           required
+                          name="quantity"
+                          onChange={handleChange}
                         />
                         <div class="invalid-feedback">
                           Please provide a valid city.
@@ -147,6 +208,8 @@ const AddProduct = () => {
                           id="description"
                           style={{ height: "100px" }}
                           placeholder="More details (optional)"
+                          name="description"
+                          onChange={handleChange}
                         ></textarea>
                         <div class="invalid-feedback">
                           Please provide a valid city.
@@ -156,9 +219,9 @@ const AddProduct = () => {
                         <button type="submit" class="btn btn-primary mx-4">
                           Submit
                         </button>
-                        <button type="reset" class="btn btn-secondary">
+                        {/* <button type="reset" class="btn btn-secondary">
                           Reset
-                        </button>
+                        </button> */}
                       </div>
                     </form>
                   </div>

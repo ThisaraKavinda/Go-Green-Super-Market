@@ -9,6 +9,7 @@ import productRouter from "./routes/product.js";
 import companyRouter from "./routes/company.js";
 import orderRouter from "./routes/order.js";
 import transportRouter from "./routes/transport.js";
+import userRouter from './routes/user.js';
 
 // Constants
 dotenv.config();
@@ -34,5 +35,6 @@ app.use("/product", productRouter);
 app.use("/company", companyRouter);
 app.use("/order", orderRouter);
 app.use("/transport", transportRouter);
+app.use("/user", userRouter);
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

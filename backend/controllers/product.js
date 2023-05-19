@@ -4,28 +4,31 @@ export const addProduct = async (req, res) => {
   // console.log(req.body);
   // console.log(req.file);
 
-  const name = req.body.name;
-  const category = req.body.category;
-  const type = req.body.type;
-  const price = req.body.price;
-  let image = "";
-  if (req.file !== undefined) {
-    image = req.file.path;
-  }
-  const availability = "yes";
-  const description = req.body.description;
-  const stock = req.body.stock;
+  // const name = req.body.name;
+  // const category = req.body.category;
+  // const type = req.body.type;
+  // const price = req.body.price;
+  // let image = "";
+  // if (req.file !== undefined) {
+  //   image = req.file.path;
+  // }
+  // const availability = "yes";
+  // const description = req.body.description;
+  // const stock = req.body.stock;
+  console.log(req.body);
 
-  let newProduct = new Product({
-    name,
-    category,
-    type,
-    price,
-    image,
-    availability,
-    description,
-    stock,
-  });
+  // let newProduct = new Product({
+  //   name,
+  //   category,
+  //   type,
+  //   price,
+  //   image,
+  //   availability,
+  //   description,
+  //   stock,
+  // });
+
+  let newProduct = new Product({ ...req.body });
 
   newProduct = await newProduct
     .save()
@@ -100,7 +103,7 @@ export const editProduct = async (req, res) => {
     image,
     availability,
     description,
-    stock
+    stock,
   };
   const update = await Product.findByIdAndUpdate(id, updateItem)
     .then(async () => {

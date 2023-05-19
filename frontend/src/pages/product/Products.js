@@ -1,10 +1,37 @@
 import "../../App.css";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import cardImage from "../../assests/images/card.jpg";
 import Layout from "../../componants/Layout/Layout";
+import { getAllProducts } from "../../controllers/product";
+import swal from "sweetalert2";
 
 const Products = () => {
+  const [productList, setProductList] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
+  const [item, setItem] = useState({});
+
+  useEffect(() => {
+    getAllProducts()
+      .then((data) => {
+        console.log(data);
+        setProductList(data);
+      })
+      .catch((err) => {
+        swal
+          .fire(
+            "Error occurred",
+            "Error occurred while we trying to get the products. please try again",
+            "error"
+          )
+          .then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            window.location.reload();
+          });
+        return;
+      });
+  });
+
   const handleChange = (e) => {
     const newValue = e.target.value;
   };
@@ -136,6 +163,53 @@ const Products = () => {
                           </div>
                         </div>
                       </div>
+
+                      {productList?.map((product) => (
+                        <div
+                          class="card mx-3 my-4"
+                          style={{ width: "21rem", height: "fit-content" }}
+                        >
+                          <img
+                            src={
+                              product?.image?.length > 0
+                                ? product.image
+                                : cardImage
+                            }
+                            class="card-img-top"
+                            alt="..."
+                            style={{ maxHeight: "200px" }}
+                          />
+                          <div class="card-body py-0">
+                            <h5 class="card-title pb-0">
+                              {product?.specificName}
+                            </h5>
+                            <p class="card-text mb-1 border-bottom pb-2">
+                              {product?.description}
+                            </p>
+                            <div class="card-body p-0 mb-3">
+                              <ul class="list-group list-group-flush d-flex align-items-center border-bottom">
+                                <li class="list-group-item w-100 text-center">
+                                  Rs. {product?.price}.00
+                                </li>
+                                <li class="list-group-item 1-100 text-center">
+                                  {product?.quantity} items available
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="card-body d-flex justify-content-around">
+                              <button
+                                class="btn btn-success"
+                                data-bs-toggle="modal"
+                                data-bs-target="#verticalycentered"
+                              >
+                                View
+                              </button>
+                              <button class="btn btn-warning">Edit</button>
+                              <button class="btn btn-danger">Delete</button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                     <div
                       class="modal fade"

@@ -9,7 +9,7 @@ const upload = multer({ storage });
 
 const router = express.Router();
 
-router.post('/', upload.single("image"), catchAsync(addProduct));
+router.post('/', catchAsync(addProduct));
 router.get('/', catchAsync(getAllProducts));
 router.get('/getProductsOfAType/:type', catchAsync(getProductsOfAType));
 router.delete('/:id', catchAsync(deleteProduct));

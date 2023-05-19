@@ -1,11 +1,92 @@
 import React, { useEffect, useState } from "react";
+import swal from "sweetalert2";
+import { auth } from "../utils/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { addUser } from "../controllers/user";
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [repeatPass, setRepeatPass] = useState("");
   const [type, setType] = useState("");
   const [name, setName] = useState("");
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (name === "") {
+      swal.fire("Fill all fields", "Please enter a name", "warning");
+      return;
+    } else if (email === "") {
+      swal.fire("Fill all fields", "Please enter the email", "warning");
+      return;
+    } else if (type === "") {
+      swal.fire("Fill all fields", "Please select a user type", "warning");
+      return;
+    } else if (pass === "") {
+      swal.fire("Fill all fields", "Please enter a password", "warning");
+      return;
+    } else if (pass.length < 6) {
+      swal.fire(
+        "Passowrd verification failed",
+        "Password should contain more than 6 characters",
+        "warning"
+      );
+      return;
+    } else if (repeatPass === "") {
+      swal.fire(
+        "Fill all fields",
+        "Please repeat the password entered in the password field",
+        "warning"
+      );
+      return;
+    } else if (repeatPass !== pass) {
+      swal.fire(
+        "Passwords mismatch",
+        "Please repeat the password entered in the password field correctly",
+        "warning"
+      );
+      return;
+    } else {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        pass
+      ).catch((err) => {
+        swal.fire(
+          "Error occurred",
+          "Error occurred while we trying to authenticate you. please try again",
+          "error"
+        );
+        return;
+      });
+      const newUser = {
+        name,
+        email,
+        type,
+      };
+      addUser(newUser)
+        .then((res) => {
+          swal.fire(
+            "Successfully registered",
+            "User successfully registered",
+            "success"
+          );
+          navigate("/productDashboard");
+        })
+        .catch((err) => {
+          swal.fire(
+            "Error occurred",
+            "Error occurred while we trying to save your details. please try again",
+            "error"
+          );
+          return;
+        });
+    }
+  };
+
   return (
     <body>
       <div class="container">
@@ -32,7 +113,11 @@ const Signin = () => {
                   </p>
                 </div>
 
-                <form class="row g-3 needs-validation" novalidate>
+                <form
+                  class="row g-3 needs-validation"
+                  noValidate
+                  onSubmit={(e) => handleRegister(e)}
+                >
                   <div class="col-12">
                     <label for="name" class="form-label">
                       Your Name
@@ -43,6 +128,7 @@ const Signin = () => {
                       class="form-control"
                       id="name"
                       required
+                      onChange={(e) => setName(e.target.value)}
                     />
                     <div class="invalid-feedback">Please, enter your name!</div>
                   </div>
@@ -57,6 +143,7 @@ const Signin = () => {
                       class="form-control"
                       id="email"
                       required
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <div class="invalid-feedback">
                       Please enter a valid Email adddress!
@@ -73,6 +160,7 @@ const Signin = () => {
                         class="form-select"
                         aria-label="Default select example"
                         id="type"
+                        onChange={(e) => setType(e.target.value)}
                       >
                         <option selected disabled>
                           Select a user type
@@ -96,6 +184,7 @@ const Signin = () => {
                       class="form-control"
                       id="pass"
                       required
+                      onChange={(e) => setPass(e.target.value)}
                     />
                     <div class="invalid-feedback">
                       Please enter your password!
@@ -112,6 +201,7 @@ const Signin = () => {
                       class="form-control"
                       id="yourPassword"
                       required
+                      onChange={(e) => setRepeatPass(e.target.value)}
                     />
                     <div class="invalid-feedback">
                       Please repeat the above password!

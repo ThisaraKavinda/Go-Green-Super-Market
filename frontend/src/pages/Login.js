@@ -1,8 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/firebase";
+import swal from "sweetalert2";
+import { loginUser } from "../controllers/user";
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (email === "") {
+      swal.fire("Fill all fields", "Please enter the email", "warning");
+      return;
+    } else if (pass === "") {
+      swal.fire("Fill all fields", "Please enter a password", "warning");
+      return;
+    } else {
+      const userCredential = await signInWithEmailAndPassword(auth, email, pass)
+        .catch((err) => {
+          swal.fire(
+            "Error occurred",
+            "Error occurred while we trying to authenticate you. please try again",
+            "error"
+          );
+          return;
+        });
+        loginUser(email)
+        .then((res) => {
+          swal.fire(
+            "Successfully Logged in",
+            "User successfully logged",
+            "success"
+          );
+          navigate("/productDashboard");
+        })
+        .catch((err) => {
+          swal.fire(
+            "Error occurred",
+            "Error occurred while we trying to log you. please try again",
+            "error"
+          );
+          return;
+        });
+    }
+  };
+
   return (
     <body>
       <div class="container">
@@ -31,26 +77,24 @@ const Login = () => {
 
                 <form
                   class="row g-3 needs-validation"
-                  novalidate
-                  action="/productDashboard"
+                  noValidate
+                  onSubmit={(e) => handleLogin(e)}
                 >
                   <div class="col-12">
                     <label for="yourUsername" class="form-label">
                       Username
                     </label>
                     <div class="input-group has-validation">
-                      <span class="input-group-text" id="inputGroupPrepend">
-                        @
-                      </span>
                       <input
-                        type="text"
+                        type="email"
                         name="username"
                         class="form-control"
                         id="yourUsername"
                         required
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                       <div class="invalid-feedback">
-                        Please enter your username.
+                        Please enter your email.
                       </div>
                     </div>
                   </div>
@@ -65,6 +109,7 @@ const Login = () => {
                       class="form-control"
                       id="yourPassword"
                       required
+                      onChange={(e) => setPass(e.target.value)}
                     />
                     <div class="invalid-feedback">
                       Please enter your password!
