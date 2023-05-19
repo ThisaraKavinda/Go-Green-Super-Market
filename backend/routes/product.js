@@ -13,7 +13,7 @@ router.post('/', upload.single("image"), catchAsync(addProduct));
 router.get('/', catchAsync(getAllProducts));
 router.get('/getProductsOfAType/:type', catchAsync(getProductsOfAType));
 router.delete('/:id', catchAsync(deleteProduct));
-router.get('/getNumOfFoods', catchAsync(getNumOfProducts));
+router.get('/getNumOf', catchAsync(getNumOfProducts));
 router.patch('/:id',  catchAsync(editProduct));
 
 export default router;

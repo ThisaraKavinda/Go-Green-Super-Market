@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const ProductSchema = new Schema({
+const CompanySchema = new Schema({
   name: {
     required: true,
     type: String,
@@ -11,28 +11,36 @@ const ProductSchema = new Schema({
     required: true,
     type: String,
   },
-  category: {
+  email: {
     required: true,
     type: String,
   },
-  price: {
+  address: {
     required: true,
     type: String,
   },
-  image: {
-    type: String,
-  },
-  availability: {
+  companyRepresentativeName: {
     required: true,
     type: String,
   },
-  description: {
+  companyRepresentativeDesignation: {
+    required: true,
     type: String,
   },
-  stock: {
+  companyRepresentativeEmail: {
+    type: String,
+  },
+  companyRepresentativeMobile: {
+    required: true,
+    type: String,
+  },
+  comments: {
+    type: String,
+  },
+  joinedDate: {
     type: String,
     required: true,
-  }
+  },
 });
 
-export const Product = mongoose.model("products", ProductSchema);
+export const Company = mongoose.model("companies", CompanySchema);

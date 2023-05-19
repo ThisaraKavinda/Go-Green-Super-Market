@@ -14,8 +14,9 @@ export const addProduct = async (req, res) => {
   }
   const availability = "yes";
   const description = req.body.description;
+  const stock = req.body.stock;
 
-  let newFood = new Product({
+  let newProduct = new Product({
     name,
     category,
     type,
@@ -23,6 +24,7 @@ export const addProduct = async (req, res) => {
     image,
     availability,
     description,
+    stock,
   });
 
   newProduct = await newProduct
@@ -82,7 +84,7 @@ export const deleteProduct = async (req, res) => {
 export const editProduct = async (req, res) => {
   const id = req.params.id;
   console.log(req.body);
-  const { price, availability, description } = req.body;
+  const { price, availability, description, stock } = req.body;
 
   let oldItem = await Food.findById(id);
   const name = oldItem.name;
@@ -98,6 +100,7 @@ export const editProduct = async (req, res) => {
     image,
     availability,
     description,
+    stock
   };
   const update = await Product.findByIdAndUpdate(id, updateItem)
     .then(async () => {

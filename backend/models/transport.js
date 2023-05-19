@@ -2,37 +2,39 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const ProductSchema = new Schema({
-  name: {
+const TransportSchema = new Schema({
+  orderId: {
     required: true,
     type: String,
   },
-  type: {
+  companyId: {
     required: true,
     type: String,
   },
-  category: {
+  companyName: {
     required: true,
     type: String,
   },
-  price: {
+  companyType: {
     required: true,
     type: String,
   },
-  image: {
-    type: String,
-  },
-  availability: {
+  address: {
     required: true,
     type: String,
   },
-  description: {
+  installationDate: {
+    required: true,
     type: String,
   },
-  stock: {
+  assignDriverName: {
+    required: true,
+    type: String,
+  },
+  assignDriverNumber: {
     type: String,
     required: true,
   }
 });
 
-export const Product = mongoose.model("products", ProductSchema);
+export const Transport = mongoose.model("transports", TransportSchema);
