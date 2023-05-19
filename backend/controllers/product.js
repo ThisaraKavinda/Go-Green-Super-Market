@@ -15,7 +15,6 @@ export const addProduct = async (req, res) => {
   // const availability = "yes";
   // const description = req.body.description;
   // const stock = req.body.stock;
-  console.log(req.body);
 
   // let newProduct = new Product({
   //   name,
@@ -86,25 +85,25 @@ export const deleteProduct = async (req, res) => {
 
 export const editProduct = async (req, res) => {
   const id = req.params.id;
-  console.log(req.body);
-  const { price, availability, description, stock } = req.body;
+  // const { price, availability, description, stock } = req.body;
 
-  let oldItem = await Food.findById(id);
-  const name = oldItem.name;
-  const category = oldItem.category;
-  const type = oldItem.type;
-  const image = oldItem.image;
+  // let oldItem = await Food.findById(id);
+  // const name = oldItem.name;
+  // const category = oldItem.category;
+  // const type = oldItem.type;
+  // const image = oldItem.image;
 
-  const updateItem = {
-    name,
-    category,
-    type,
-    price,
-    image,
-    availability,
-    description,
-    stock,
-  };
+  // const updateItem = {
+  //   name,
+  //   category,
+  //   type,
+  //   price,
+  //   image,
+  //   availability,
+  //   description,
+  //   stock,
+  // };
+  const updateItem = req.body;
   const update = await Product.findByIdAndUpdate(id, updateItem)
     .then(async () => {
       res.status(200).send({ status: "Item updated" });
@@ -115,5 +114,16 @@ export const editProduct = async (req, res) => {
         .status(500)
         .send({ status: "Error with updating data", error: err.message });
     });
-  console.log(update);
+};
+
+export const getProduct = async (req, res) => {
+  const id = req.params.id;
+  const product = await Product.findById(id)
+    .then((product) => {
+      res.status(200).send(product);
+    })
+    .catch((errr) => {
+      console.log(errr.message);
+      res.status(500).send({ status: "Error with deleting item" });
+    });
 };

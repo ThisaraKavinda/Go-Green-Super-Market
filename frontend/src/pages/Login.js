@@ -28,23 +28,25 @@ const Login = () => {
             "error"
           );
           return;
-        });
-        loginUser(email)
-        .then((res) => {
-          swal.fire(
-            "Successfully Logged in",
-            "User successfully logged",
-            "success"
-          );
-          navigate("/productDashboard");
         })
-        .catch((err) => {
-          swal.fire(
-            "Error occurred",
-            "Error occurred while we trying to log you. please try again",
-            "error"
-          );
-          return;
+        .then(() => {
+          loginUser(email)
+            .then((res) => {
+              swal.fire(
+                "Successfully Logged in",
+                "User successfully logged",
+                "success"
+              );
+              navigate("/productDashboard");
+            })
+            .catch((err) => {
+              swal.fire(
+                "Error occurred",
+                "Error occurred while we trying to log you. please try again",
+                "error"
+              );
+              return;
+            });
         });
     }
   };

@@ -1,52 +1,59 @@
-import React, { useState } from "react";
-import Layout from "../../componants/Layout/Layout";
-import { useNavigate } from "react-router-dom";
-import { addSeller } from "../../controllers/seller";
+import React, { useState, useEffect } from "react";
+import "../../assests/js/main.js";
+import Select from "react-select";
+import DragAndDropZone from "../../componants/DragAndDropZone/DragAndDropZone.js";
+import Layout from "../../componants/Layout/Layout.js";
+import { editSeller, getSeller } from "../../controllers/seller.js";
 import swal from "sweetalert2";
-import { auth } from "../../utils/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddSeller = () => {
+const EditSeller = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+
   const [item, setItem] = useState({});
-  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    getSeller(id)
+      .then((data) => {
+        setItem(data);
+      })
+      .catch((err) => {
+        swal
+          .fire(
+            "Error occurred",
+            "Error occurred while we trying to get the seller. please try again",
+            "error"
+          )
+          .then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            window.location.reload();
+          });
+        return;
+      });
+  }, [id]);
 
   const handleChange = (e) => {
     setItem((item) => ({ ...item, [e.target.name]: e.target.value }));
   };
 
-  const handleAddItem = async () => {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      item?.email,
-      password
-    )
+  const handleEditItem = () => {
+    editSeller(id, item)
+      .then((res) => {
+        swal.fire(
+          "Successfully edited",
+          "Seller successfully edited",
+          "success"
+        );
+        navigate("/sellers");
+      })
       .catch((err) => {
         swal.fire(
           "Error occurred",
-          "Error occurred while we trying to authenticate the seller. please try again",
+          "Error occurred while we trying to add the product. please try again",
           "error"
         );
         return;
-      })
-      .then(() => {
-        addSeller(item)
-          .then((res) => {
-            swal.fire(
-              "Successfully added",
-              "Seller successfully added",
-              "success"
-            );
-            navigate("/sellers");
-          })
-          .catch((err) => {
-            swal.fire(
-              "Error occurred",
-              "Error occurred while we trying to add the seller. please try again",
-              "error"
-            );
-            return;
-          });
       });
   };
 
@@ -62,7 +69,7 @@ const AddSeller = () => {
                   <a href="index.html">Home</a>
                 </li>
                 <li class="breadcrumb-item">Sellers</li>
-                <li class="breadcrumb-item active">Add seller</li>
+                <li class="breadcrumb-item active">Edit seller</li>
               </ol>
             </nav>
           </div>
@@ -71,12 +78,14 @@ const AddSeller = () => {
               <div class="col-lg-12">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Fill this form to add a seller</h5>
+                    <h5 class="card-title">
+                      Update following form to edit the seller
+                    </h5>
                     <form
                       class="row g-3 needs-validation"
                       onSubmit={(e) => {
                         e.preventDefault();
-                        handleAddItem();
+                        handleEditItem();
                       }}
                     >
                       <div class="col-12">
@@ -91,6 +100,7 @@ const AddSeller = () => {
                           placeholder="Name"
                           required
                           name="name"
+                          value={item?.name}
                         />
                       </div>
                       <div class="col-12">
@@ -105,21 +115,7 @@ const AddSeller = () => {
                           required
                           name="email"
                           onChange={handleChange}
-                        />
-                        <div class="valid-feedback">Looks good!</div>
-                      </div>
-                      <div class="col-12">
-                        <label for="passoword" class="form-label">
-                          Passowrd
-                        </label>
-                        <input
-                          type="password"
-                          class="form-control"
-                          id="password"
-                          placeholder="Password"
-                          required
-                          name="password"
-                          onChange={(e) => setPassword(e.target.value)}
+                          value={item?.email}
                         />
                         <div class="valid-feedback">Looks good!</div>
                       </div>
@@ -132,6 +128,7 @@ const AddSeller = () => {
                           aria-label="Default select example"
                           name="type"
                           onChange={(e) => handleChange(e)}
+                          value={item?.type}
                         >
                           <option value="Bakery">Bakery</option>
                           <option value="Beverage">Beverage</option>
@@ -158,6 +155,7 @@ const AddSeller = () => {
                             name="address"
                             onChange={handleChange}
                             required
+                            value={item?.address}
                           />
                         </div>
                       </div>
@@ -176,6 +174,7 @@ const AddSeller = () => {
                           required
                           name="companyRepresentativeName"
                           onChange={handleChange}
+                          value={item?.companyRepresentativeName}
                         />
                       </div>
                       <div class="col-12">
@@ -193,6 +192,7 @@ const AddSeller = () => {
                           required
                           name="companyRepresentativeDesignation"
                           onChange={handleChange}
+                          value={item?.companyRepresentativeDesignation}
                         />
                       </div>
                       <div class="col-12">
@@ -210,6 +210,7 @@ const AddSeller = () => {
                           required
                           name="companyRepresentativeEmail"
                           onChange={handleChange}
+                          value={item?.companyRepresentativeEmail}
                         />
                       </div>
                       <div class="col-12">
@@ -227,6 +228,7 @@ const AddSeller = () => {
                           required
                           name="companyRepresentativeMobile"
                           onChange={handleChange}
+                          value={item?.companyRepresentativeMobile}
                         />
                       </div>
 
@@ -235,8 +237,8 @@ const AddSeller = () => {
                           Submit
                         </button>
                         {/* <button type="reset" class="btn btn-secondary">
-                          Reset
-                        </button> */}
+                        Reset
+                      </button> */}
                       </div>
                     </form>
                   </div>
@@ -250,4 +252,4 @@ const AddSeller = () => {
   );
 };
 
-export default AddSeller;
+export default EditSeller;

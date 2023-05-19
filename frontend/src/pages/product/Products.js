@@ -3,19 +3,23 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import cardImage from "../../assests/images/card.jpg";
 import Layout from "../../componants/Layout/Layout";
-import { getAllProducts } from "../../controllers/product";
+import { getAllProducts, deleteProduct } from "../../controllers/product";
 import swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
+  const navigate = useNavigate();
+
   const [productList, setProductList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [item, setItem] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     getAllProducts()
       .then((data) => {
-        console.log(data);
         setProductList(data);
+        setFilteredList(data);
       })
       .catch((err) => {
         swal
@@ -30,10 +34,83 @@ const Products = () => {
           });
         return;
       });
-  });
+  }, []);
 
-  const handleChange = (e) => {
-    const newValue = e.target.value;
+  const handleCategoryChange = (e) => {
+    if (e.target.value === "All") {
+      setFilteredList(productList);
+    } else {
+      setFilteredList(
+        productList.filter((product) => product?.category === e.target.value)
+      );
+    }
+  };
+
+  const handleSortChange = (e) => {
+    if (e.target.value === "name") {
+      setFilteredList(
+        filteredList.sort((a, b) => a.specificName - b.specificName)
+      );
+    } else {
+      const sort = e.target.value;
+      setFilteredList(
+        filteredList.sort((a, b) => Number(a[sort]) - Number(b[sort]))
+      );
+    }
+  };
+
+  const handleSearch = () => {
+    setFilteredList(
+      productList.filter(
+        (product) =>
+          product.specificName.includes(searchTerm) ||
+          product.genericName.includes(searchTerm)
+      )
+    );
+  };
+
+  const handleViewProduct = (product) => {
+    setItem(product);
+  };
+
+  const handleDeleteProduct = (id) => {
+    swal
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      })
+      .then((result) => {
+        if (result.value === true) {
+          deleteProduct(id).then((res) => {
+            if (res) {
+              swal
+                .fire({
+                  title: "Success!",
+                  text: "Product has been deleted",
+                  icon: "success",
+                  showConfirmButton: false,
+                  timer: 1500,
+                })
+                .then(() => {
+                  window.location.reload();
+                });
+            } else {
+              swal.fire({
+                title: "Error!",
+                text: "Something went wrong",
+                icon: "error",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
+        }
+      });
   };
 
   return (
@@ -66,11 +143,13 @@ const Products = () => {
                             placeholder="Search"
                             aria-label="Search"
                             aria-describedby="button-addon2"
+                            onChange={(e) => setSearchTerm(e.target.value)}
                           />
                           <button
                             class="btn btn-outline-secondary"
                             type="button"
                             id="button-addon2"
+                            onClick={handleSearch}
                           >
                             <i class="bi bi-search"></i>
                             <span class="mx-2">Search</span>
@@ -83,12 +162,28 @@ const Products = () => {
                             <div class="row d-flex align-items-center">
                               Category:
                               <div class="col">
-                                <Select
-                                  value={"d"}
-                                  onChange={handleChange}
-                                  options={["d", "dd"]}
-                                  id="category"
-                                />
+                                <select
+                                  class="form-select"
+                                  aria-label="Default select example"
+                                  name="category"
+                                  onChange={(e) => handleCategoryChange(e)}
+                                >
+                                  <option value="All">All</option>
+                                  <option value="Bakery">Bakery</option>
+                                  <option value="Beverage">Beverage</option>
+                                  <option value="Nonfood & Pharmacy">
+                                    Nonfood & Pharmacy
+                                  </option>
+                                  <option value="Produce & Floral">
+                                    Produce & Floral
+                                  </option>
+                                  <option value="Prepared Foods">
+                                    Prepared Foods
+                                  </option>
+                                  <option value="Household items">
+                                    Household items
+                                  </option>
+                                </select>
                               </div>
                             </div>
                           </div>
@@ -96,12 +191,16 @@ const Products = () => {
                             <div class="row d-flex align-items-center">
                               Sort by:
                               <div class="col">
-                                <Select
-                                  value={"d"}
-                                  onChange={handleChange}
-                                  options={["d", "dd"]}
-                                  id="category"
-                                />
+                                <select
+                                  class="form-select"
+                                  aria-label="Default select example"
+                                  name="sort"
+                                  onChange={(e) => handleSortChange(e)}
+                                >
+                                  <option value="name">Name</option>
+                                  <option value="price">Price</option>
+                                  <option value="quantity">Quantity</option>
+                                </select>
                               </div>
                             </div>
                           </div>
@@ -164,7 +263,7 @@ const Products = () => {
                         </div>
                       </div>
 
-                      {productList?.map((product) => (
+                      {filteredList?.map((product) => (
                         <div
                           class="card mx-3 my-4"
                           style={{ width: "21rem", height: "fit-content" }}
@@ -201,11 +300,24 @@ const Products = () => {
                                 class="btn btn-success"
                                 data-bs-toggle="modal"
                                 data-bs-target="#verticalycentered"
+                                onClick={() => handleViewProduct(product)}
                               >
                                 View
                               </button>
-                              <button class="btn btn-warning">Edit</button>
-                              <button class="btn btn-danger">Delete</button>
+                              <button
+                                class="btn btn-warning"
+                                onClick={(e) =>
+                                  navigate(`/editProduct/${product._id}`)
+                                }
+                              >
+                                Edit
+                              </button>
+                              <button
+                                class="btn btn-danger"
+                                onClick={() => handleDeleteProduct(product._id)}
+                              >
+                                Delete
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -219,7 +331,9 @@ const Products = () => {
                       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Vertically Centered</h5>
+                            <h5 class="modal-title">
+                              {item?.specificName?.toUpperCase()}
+                            </h5>
                             <button
                               type="button"
                               class="btn-close"
@@ -315,26 +429,19 @@ const Products = () => {
                             <div class="my-3">
                               <ul class="list-group">
                                 <li class="list-group-item">
-                                  Generic name: Ice cream
+                                  Generic name: {item?.genericName}
                                 </li>
                                 <li class="list-group-item">
-                                  Category: Deserts
+                                  Category: {item?.category}
                                 </li>
                                 <li class="list-group-item">
-                                  Seller company: Dgfsde sd
+                                  Price: Rs.{item?.price}.00
                                 </li>
                                 <li class="list-group-item">
-                                  Price: Rs.1235.00
+                                  Available quantity: {item?.quantity}
                                 </li>
                                 <li class="list-group-item">
-                                  Available quantity: 56
-                                </li>
-                                <li class="list-group-item">
-                                  Description: Non omnis incidunt qui sed
-                                  occaecati magni asperiores est mollitia.
-                                  Soluta at et reprehenderit. Placeat autem
-                                  numquam et fuga numquam. Tempora in facere
-                                  consequatur sit dolor dignissimos.
+                                  Description: {item?.description}
                                 </li>
                               </ul>
                             </div>

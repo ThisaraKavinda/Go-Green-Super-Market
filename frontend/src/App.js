@@ -15,32 +15,36 @@ import AddProduct from "./pages/product/AddProduct";
 import Products from "./pages/product/Products";
 import ProductDashboard from "./pages/product/ProductDashboard";
 import ProductReport from "./pages/product/ProductReport";
+import EditProduct from "./pages/product/EditProduct";
 
 //Seller
 import AddSeller from "./pages/seller/AddSeller";
+import Sellers from "./pages/seller/Sellers";
+import EditSeller from "./pages/seller/EditSeller";
+import ViewSeller from "./pages/seller/ViewSeller";
 
 function App() {
   return (
     <BrowserRouter>
       {/* <Layout> */}
-        <Routes>
-          <Route exact path="/t" element={<Test />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/register" element={<Signin />} />
+      <Routes>
+        <Route exact path="/t" element={<Test />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/register" element={<Signin />} />
 
-          {/* Product */}
-          <Route exact path="/addProduct" element={<AddProduct />} />
-          <Route exact path="/products" element={<Products />} />
-          <Route
-            exact
-            path="/productDashboard"
-            element={<ProductDashboard />}
-          />
-          <Route exact path="/productReport" element={<ProductReport />} />
+        {/* Product */}
+        <Route exact path="/addProduct" element={<AddProduct />} />
+        <Route exact path="/products" element={<Products />} />
+        <Route exact path="/productDashboard" element={<ProductDashboard />} />
+        <Route exact path="/productReport" element={<ProductReport />} />
+        <Route exact path="/editProduct/:id" element={<EditProduct />} />
 
-          {/* Seller */}
-          <Route exact path="/addSeller" element={<AddSeller />} />
-        </Routes>
+        {/* Seller */}
+        <Route exact path="/addSeller" element={<AddSeller />} />
+        <Route exact path="/sellers" element={<Sellers />} />
+        <Route exact path="/editSeller/:id" element={<EditSeller />} />
+        <Route exact path="/viewSeller/:id" element={<ViewSeller />} />
+      </Routes>
       {/* </Layout> */}
     </BrowserRouter>
   );

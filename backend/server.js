@@ -32,7 +32,7 @@ connection.once("open", () => {
 
 // Routers use
 app.use("/product", productRouter);
-app.use("/company", companyRouter);
+app.use("/seller", companyRouter);
 app.use("/order", orderRouter);
 app.use("/transport", transportRouter);
 app.use("/user", userRouter);

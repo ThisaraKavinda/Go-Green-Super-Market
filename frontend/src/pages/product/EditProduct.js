@@ -1,36 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../assests/js/main.js";
 import Select from "react-select";
 import DragAndDropZone from "../../componants/DragAndDropZone/DragAndDropZone.js";
 import Layout from "../../componants/Layout/Layout.js";
-import { addProduct } from "../../controllers/product.js";
+import { editProduct, getProduct } from "../../controllers/product.js";
 import swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddProduct = () => {
-  // {
-  //   specificName: "",
-  //   genericName: "",
-  //   category: "",
-  //   price: "",
-  //   quantity: "",
-  //   description: "",
-  // }
-
+const EditProduct = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [item, setItem] = useState({});
+
+  useEffect(() => {
+    getProduct(id)
+      .then((data) => {
+        console.log(data);
+        setItem(data);
+      })
+      .catch((err) => {
+        swal
+          .fire(
+            "Error occurred",
+            "Error occurred while we trying to get the products. please try again",
+            "error"
+          )
+          .then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            window.location.reload();
+          });
+        return;
+      });
+  }, [id]);
 
   const handleChange = (e) => {
     setItem((item) => ({ ...item, [e.target.name]: e.target.value }));
   };
 
-  const handleAddItem = () => {
-    addProduct(item)
+  const handleEditItem = () => {
+    editProduct(id, item)
       .then((res) => {
         swal.fire(
-          "Successfully added",
-          "Product successfully added",
+          "Successfully edited",
+          "Product successfully edited",
           "success"
         );
         navigate("/products");
@@ -57,7 +70,7 @@ const AddProduct = () => {
                   <a href="index.html">Home</a>
                 </li>
                 <li class="breadcrumb-item">Products</li>
-                <li class="breadcrumb-item active">Add Product</li>
+                <li class="breadcrumb-item active">Edit Product</li>
               </ol>
             </nav>
           </div>
@@ -78,12 +91,12 @@ const AddProduct = () => {
               <div class="col-lg-6">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Fill this form to add a product</h5>
+                    <h5 class="card-title">Update following form to edit the product</h5>
                     <form
                       class="row g-3 needs-validation"
                       onSubmit={(e) => {
                         e.preventDefault();
-                        handleAddItem();
+                        handleEditItem();
                       }}
                     >
                       <div class="col-12">
@@ -98,22 +111,8 @@ const AddProduct = () => {
                           placeholder="Name"
                           required
                           name="specificName"
+                          value={item?.specificName}
                         />
-                        {/* <input
-                          type="text"
-                          className={`form-control ${
-                            true ? "is-valid" : "is-invalid"
-                          }`}
-                          id="specificName"
-                          onChange={handleChange}
-                          placeholder="Name"
-                          required
-                          name="specificName"
-                        /> */}
-                        {/* <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">
-                          Please provide a valid city.
-                        </div> */}
                       </div>
                       <div class="col-12">
                         <label for="genericName" class="form-label">
@@ -127,6 +126,7 @@ const AddProduct = () => {
                           required
                           name="genericName"
                           onChange={handleChange}
+                          value={item?.genericName}
                         />
                         <div class="valid-feedback">Looks good!</div>
                       </div>
@@ -139,6 +139,7 @@ const AddProduct = () => {
                           aria-label="Default select example"
                           name="category"
                           onChange={handleChange}
+                          value={item?.category}
                         >
                           <option value="Bakery">Bakery</option>
                           <option value="Beverage">Beverage</option>
@@ -172,6 +173,7 @@ const AddProduct = () => {
                             name="price"
                             onChange={handleChange}
                             required
+                            value={item?.price}
                           />
                           <span class="input-group-text" id="basic-addon2">
                             .00 LKR
@@ -193,6 +195,7 @@ const AddProduct = () => {
                           required
                           name="quantity"
                           onChange={handleChange}
+                          value={item?.quantity}
                         />
                         <div class="invalid-feedback">
                           Please provide a valid city.
@@ -209,6 +212,7 @@ const AddProduct = () => {
                           placeholder="More details (optional)"
                           name="description"
                           onChange={handleChange}
+                          value={item?.description}
                         ></textarea>
                         <div class="invalid-feedback">
                           Please provide a valid city.
@@ -234,4 +238,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

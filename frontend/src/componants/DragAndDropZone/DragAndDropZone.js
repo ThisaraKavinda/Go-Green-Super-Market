@@ -6,13 +6,14 @@ const DragAndDropZone = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: (acceptedFiles) => {
-      setImages(
-        acceptedFiles.map((file) =>
+      setImages([
+        ...images,
+        ...acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
         ),
-      );
+      ]);
     },
     accept: "image/*",
   });
@@ -34,16 +35,15 @@ const DragAndDropZone = () => {
           </p>
         )}
       </div>
-      {/* {images?.map((image) => (
-        <div style={thumb} key={file.name}>
-        <div style={thumbInner}>
-          <img
-            src={file.preview}
-            style={img}
-          />
-        </div>
+      <div>
+        {images?.map((image) => (
+          <div key={image.name}>
+            <div>
+              <img src={image.preview} />
+            </div>
+          </div>
+        ))}
       </div>
-      ))} */}
     </>
   );
 };

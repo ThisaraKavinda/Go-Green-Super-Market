@@ -4,29 +4,21 @@ export const addCompany = async (req, res) => {
   // console.log(req.body);
   // console.log(req.file);
 
-  const name = req.body.name;
-  const email = req.body.email;
-  const type = req.body.type;
-  const address = req.body.address;
-  const companyRepresentativeName = req.body.companyRepresentativeName;
-  const companyRepresentativeDesignation =
-    req.body.companyRepresentativeDesignation;
-  const companyRepresentativeEmail = req.body.companyRepresentativeEmail;
-  const companyRepresentativeMobile = req.body.companyRepresentativeMobile;
-  const comments = req.body.comments;
-  const joinedDate = new Date().toISOString();
+  // const name = req.body.name;
+  // const email = req.body.email;
+  // const type = req.body.type;
+  // const address = req.body.address;
+  // const companyRepresentativeName = req.body.companyRepresentativeName;
+  // const companyRepresentativeDesignation =
+  //   req.body.companyRepresentativeDesignation;
+  // const companyRepresentativeEmail = req.body.companyRepresentativeEmail;
+  // const companyRepresentativeMobile = req.body.companyRepresentativeMobile;
+  // const comments = req.body.comments;
+  // const joinedDate = new Date().toISOString();
 
   let newCompany = new Company({
-    name,
-    email,
-    type,
-    address,
-    companyRepresentativeName,
-    companyRepresentativeDesignation,
-    companyRepresentativeEmail,
-    companyRepresentativeMobile,
-    comments,
-    joinedDate,
+    ...req.body,
+    joinedDate: new Date().toISOString(),
   });
 
   newCompany = await newCompany
@@ -74,7 +66,7 @@ export const getCompaniesOfAType = async (req, res) => {
 export const deleteCompany = async (req, res) => {
   const id = req.params.id;
   await Company.findByIdAndDelete(id)
-    .then((product) => {
+    .then((company) => {
       res.status(200).send({ status: "Item deleted", deleteditem: company });
     })
     .catch((errr) => {
@@ -85,35 +77,36 @@ export const deleteCompany = async (req, res) => {
 
 export const editCompany = async (req, res) => {
   const id = req.params.id;
-  console.log(req.body);
-  const {
-    type,
-    email,
-    address,
-    companyRepresentativeName,
-    companyRepresentativeDesignation,
-    companyRepresentativeEmail,
-    companyRepresentativeMobile,
-    comments,
-  } = req.body;
+  // const {
+  //   type,
+  //   email,
+  //   address,
+  //   companyRepresentativeName,
+  //   companyRepresentativeDesignation,
+  //   companyRepresentativeEmail,
+  //   companyRepresentativeMobile,
+  //   comments,
+  // } = req.body;
 
-  let oldItem = await Food.findById(id);
-  const name = oldItem.name;
-  const joinedDate = oldItem.joinedDate;
+  const updatedItem = req.body;
 
-  const updateItem = {
-    name,
-    type,
-    email,
-    address,
-    companyRepresentativeName,
-    companyRepresentativeDesignation,
-    companyRepresentativeEmail,
-    companyRepresentativeMobile,
-    comments,
-    joinedDate,
-  };
-  const update = await Company.findByIdAndUpdate(id, updateItem)
+  // let oldItem = await Food.findById(id);
+  // const name = oldItem.name;
+  // const joinedDate = oldItem.joinedDate;
+
+  // const updateItem = {
+  //   name,
+  //   type,
+  //   email,
+  //   address,
+  //   companyRepresentativeName,
+  //   companyRepresentativeDesignation,
+  //   companyRepresentativeEmail,
+  //   companyRepresentativeMobile,
+  //   comments,
+  //   joinedDate,
+  // };
+  const update = await Company.findByIdAndUpdate(id, updatedItem)
     .then(async () => {
       res.status(200).send({ status: "Item updated" });
     })
@@ -124,4 +117,16 @@ export const editCompany = async (req, res) => {
         .send({ status: "Error with updating data", error: err.message });
     });
   console.log(update);
+};
+
+export const getCompany = async (req, res) => {
+  const id = req.params.id;
+  const company = await Company.findById(id)
+    .then((company) => {
+      res.status(200).send(company);
+    })
+    .catch((errr) => {
+      console.log(errr.message);
+      res.status(500).send({ status: "Error with deleting item" });
+    });
 };
