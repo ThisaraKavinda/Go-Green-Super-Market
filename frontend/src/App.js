@@ -23,6 +23,10 @@ import Sellers from "./pages/seller/Sellers";
 import EditSeller from "./pages/seller/EditSeller";
 import ViewSeller from "./pages/seller/ViewSeller";
 
+import AddVehicle from "./pages/vehicle/AddVehicle";
+import Vehicles from "./pages/vehicle/Vehicles";
+import EditVehicle from "./pages/vehicle/EditVehicle";
+
 function App() {
   return (
     <BrowserRouter>
@@ -44,6 +48,12 @@ function App() {
         <Route exact path="/sellers" element={<Sellers />} />
         <Route exact path="/editSeller/:id" element={<EditSeller />} />
         <Route exact path="/viewSeller/:id" element={<ViewSeller />} />
+
+        <Route exact path="/addVehicle" element={<AddVehicle />} />
+        <Route exact path="/vehicles" element={<Vehicles />} />
+        <Route exact path="/editVehicle/:id" element={<EditVehicle />} />
+
+
       </Routes>
       {/* </Layout> */}
     </BrowserRouter>

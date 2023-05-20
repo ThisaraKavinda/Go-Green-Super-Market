@@ -1,14 +1,14 @@
 import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const DragAndDropZone = () => {
-  const [images, setImages] = useState([]);
+const DragAndDropZone = ({ images, setImages }) => {
+  // const [images, setImages] = useState([]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: (acceptedFiles) => {
       setImages([
         ...images,
-        ...acceptedFiles.map((file) =>
+        ...acceptedFiles?.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
@@ -18,7 +18,9 @@ const DragAndDropZone = () => {
     accept: "image/*",
   });
 
-  console.log(images);
+  const handleRemoveImage = (image) => {
+    setImages(images.filter((img) => image.name !== img.name));
+  };
   return (
     <>
       <div
@@ -35,11 +37,23 @@ const DragAndDropZone = () => {
           </p>
         )}
       </div>
-      <div>
+      <div class="my-4">
         {images?.map((image) => (
-          <div key={image.name}>
-            <div>
-              <img src={image.preview} />
+          <div
+            key={image.name}
+            class="row d-flex justify-content-between align-items-center"
+          >
+            <div class="col-3">
+              <img
+                src={image.preview}
+                class={"img-thumbnail"}
+                alt={image.name}
+                style={{ height: "70px" }}
+              />
+            </div>
+            <p class="col-7">{image.name}</p>
+            <div class="col-2" onClick={() => handleRemoveImage(image)}>
+              <i class="bi bi-trash"></i>
             </div>
           </div>
         ))}

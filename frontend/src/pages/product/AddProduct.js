@@ -6,43 +6,73 @@ import Layout from "../../componants/Layout/Layout.js";
 import { addProduct } from "../../controllers/product.js";
 import swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { storage } from "../../utils/firebase.js";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const AddProduct = () => {
-  // {
-  //   specificName: "",
-  //   genericName: "",
-  //   category: "",
-  //   price: "",
-  //   quantity: "",
-  //   description: "",
-  // }
-
   const navigate = useNavigate();
 
   const [item, setItem] = useState({});
+  const [images, setImages] = useState([]);
+  const [imgLinks, setImgLinks] = useState([]);
+  const [percent, setPercent] = useState(0);
 
   const handleChange = (e) => {
     setItem((item) => ({ ...item, [e.target.name]: e.target.value }));
   };
 
   const handleAddItem = () => {
-    addProduct(item)
-      .then((res) => {
+    const promises = [];
+    // images.map((image) => handleUpload(image));
+    images.map((image) => {
+      const storageRef = ref(storage, `/images/${image.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+      // const uploadTask = storage.ref(`images/${image.name}`).put(image);
+      promises.push(uploadTask);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setPercent(progress);
+        },
+        (error) => {
+          console.log(error);
+        },
+        async () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            setImgLinks((prevState) => [...prevState, url]);
+          });
+        }
+      );
+    });
+    Promise.all(promises)
+      .then(() => {
         swal.fire(
-          "Successfully added",
-          "Product successfully added",
+          "Images uploaded",
+          "Product images successfully uploaded",
           "success"
         );
-        navigate("/products");
+        addProduct({ ...item, images: imgLinks })
+          .then((res) => {
+            swal.fire(
+              "Successfully added",
+              "Product successfully added",
+              "success"
+            );
+            navigate("/products");
+          })
+          .catch((err) => {
+            swal.fire(
+              "Error occurred",
+              "Error occurred while we trying to add the product. please try again",
+              "error"
+            );
+            return;
+          });
       })
-      .catch((err) => {
-        swal.fire(
-          "Error occurred",
-          "Error occurred while we trying to add the product. please try again",
-          "error"
-        );
-        return;
-      });
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -70,7 +100,7 @@ const AddProduct = () => {
                       Drag and drop or Click to select to add images
                     </h5>
                     <div class="my-5 mx-3">
-                      <DragAndDropZone />
+                      <DragAndDropZone images={images} setImages={setImages} />
                     </div>
                   </div>
                 </div>

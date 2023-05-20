@@ -12,11 +12,11 @@ const EditProduct = () => {
   const navigate = useNavigate();
 
   const [item, setItem] = useState({});
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     getProduct(id)
       .then((data) => {
-        console.log(data);
         setItem(data);
       })
       .catch((err) => {
@@ -63,7 +63,7 @@ const EditProduct = () => {
       <Layout>
         <div>
           <div class="pagetitle">
-            <h1>Add Product</h1>
+            <h1>Edit Product</h1>
             <nav>
               <ol class="breadcrumb">
                 <li class="breadcrumb-item">
@@ -83,7 +83,31 @@ const EditProduct = () => {
                       Drag and drop or Click to select to add images
                     </h5>
                     <div class="my-5 mx-3">
-                      <DragAndDropZone />
+                      <DragAndDropZone images={images} setImages={setImages} />
+                      <div class="my-4">
+                        {item?.images?.map((image, index) => (
+                          <div
+                            key={image}
+                            class="row d-flex justify-content-between align-items-center"
+                          >
+                            <div class="col-3">
+                              <img
+                                src={image}
+                                class={"img-thumbnail"}
+                                alt={image.name}
+                                style={{ height: "70px" }}
+                              />
+                            </div>
+                            <p class="col-7">{`image ${index}.png`}</p>
+                            <div
+                              class="col-2"
+                              // onClick={() => handleRemoveImage(image)}
+                            >
+                              <i class="bi bi-trash"></i>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -91,7 +115,9 @@ const EditProduct = () => {
               <div class="col-lg-6">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Update following form to edit the product</h5>
+                    <h5 class="card-title">
+                      Update following form to edit the product
+                    </h5>
                     <form
                       class="row g-3 needs-validation"
                       onSubmit={(e) => {

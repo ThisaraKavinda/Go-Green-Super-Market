@@ -221,7 +221,7 @@ const Products = () => {
                       class="container d-flex flex-wrap mx-auto w-100"
                       style={{ maxWidth: "2000px" }}
                     >
-                      <div
+                      {/* <div
                         class="card mx-3 my-4"
                         style={{ width: "21rem", height: "fit-content" }}
                       >
@@ -261,7 +261,7 @@ const Products = () => {
                             <button class="btn btn-danger">Delete</button>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
 
                       {filteredList?.map((product) => (
                         <div
@@ -270,8 +270,8 @@ const Products = () => {
                         >
                           <img
                             src={
-                              product?.image?.length > 0
-                                ? product.image
+                              product?.images?.length > 0
+                                ? product.images?.[0]
                                 : cardImage
                             }
                             class="card-img-top"
@@ -343,12 +343,6 @@ const Products = () => {
                           </div>
                           <div class="modal-body">
                             <div class="mb-2 d-flex justify-content-center">
-                              {/* <img
-                            src={cardImage}
-                            class="img-thumbnail"
-                            alt="..."
-                            style={{ maxHeight: "270px" }}
-                          /> */}
                               <div
                                 id="carouselExampleIndicators"
                                 class="carousel slide"
@@ -377,7 +371,7 @@ const Products = () => {
                                   ></button>
                                 </div>
                                 <div class="carousel-inner">
-                                  <div class="carousel-item active">
+                                  {/* <div class="carousel-item active">
                                     <img
                                       src={cardImage}
                                       class="d-block w-100"
@@ -397,7 +391,49 @@ const Products = () => {
                                       class="d-block w-100"
                                       alt="..."
                                     />
-                                  </div>
+                                  </div> */}
+                                  {item?.images?.length > 0 ? (
+                                    <>
+                                      {item?.images.map((image, index) => {
+                                        console.log(index);
+                                        if (index === 0) {
+                                          return (
+                                            <div
+                                              class="carousel-item active"
+                                              key={index}
+                                            >
+                                              <img
+                                                src={image}
+                                                class="d-block w-100"
+                                                alt="..."
+                                              />
+                                            </div>
+                                          );
+                                        } else {
+                                          return (
+                                            <div
+                                              class="carousel-item"
+                                              key={index}
+                                            >
+                                              <img
+                                                src={image}
+                                                class="d-block w-100"
+                                                alt="..."
+                                              />
+                                            </div>
+                                          );
+                                        }
+                                      })}
+                                    </>
+                                  ) : (
+                                    <div class="carousel-item active">
+                                      <img
+                                        src={cardImage}
+                                        class="d-block w-100"
+                                        alt="..."
+                                      />
+                                    </div>
+                                  )}
                                 </div>
 
                                 <button
