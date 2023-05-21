@@ -79,7 +79,13 @@ const AddProduct = () => {
             return;
           });
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        swal.fire(
+          "Error occurred",
+          "Error occurred while we trying to add the product. please try again",
+          "error"
+        )
+      );
   };
 
   return (
