@@ -8,6 +8,7 @@ const NavBar = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   const type = localStorage.getItem("type");
   const userId = localStorage.getItem("userId");
+  const userName = localStorage.getItem("name");
   return (
     <div>
       <header id="header" class="header fixed-top d-flex align-items-center">
@@ -73,7 +74,7 @@ const NavBar = () => {
                       class="rounded-circle"
                     />
                     <span class="d-none d-md-block dropdown-toggle ps-2">
-                      K. Anderson
+                      {userName?.length > 0 ? userName : "Demith Rathnayaka"}
                     </span>
                   </a>
                 </li>

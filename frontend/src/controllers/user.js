@@ -8,6 +8,7 @@ export const addUser = async (user) => {
   localStorage.setItem("userId", data._id);
   localStorage.setItem("user", data);
   localStorage.setItem("type", data.type);
+  localStorage.setItem("name", data.name);
   return data;
 };
 
