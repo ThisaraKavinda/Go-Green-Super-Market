@@ -31,6 +31,7 @@ export const addTransport = async (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 
@@ -41,6 +42,7 @@ export const getAllTransports = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 
@@ -52,6 +54,7 @@ export const getNumOfTransports = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 

@@ -17,6 +17,7 @@ export const addCheckout = async (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 
@@ -27,6 +28,7 @@ export const getAllCheckouts = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 

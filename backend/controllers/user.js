@@ -18,6 +18,7 @@ export const addUser = async (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 
@@ -33,5 +34,6 @@ export const findUserByEmail = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };

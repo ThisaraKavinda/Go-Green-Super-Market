@@ -36,6 +36,7 @@ export const addProduct = async (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 
@@ -46,6 +47,7 @@ export const getAllProducts = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 
@@ -57,6 +59,7 @@ export const getNumOfProducts = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 
@@ -68,6 +71,7 @@ export const getProductsOfAType = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 

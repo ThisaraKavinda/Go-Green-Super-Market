@@ -22,6 +22,11 @@ const AddProduct = () => {
   };
 
   const handleAddItem = () => {
+    swal.fire(
+      "Stay tuned",
+      "Please wait until we upload your images to our servers",
+      "warning"
+    );
     const promises = [];
     // images.map((image) => handleUpload(image));
     images.map((image) => {
@@ -42,7 +47,8 @@ const AddProduct = () => {
         },
         async () => {
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            setImgLinks((prevState) => [...prevState, url]);
+            console.log(url);
+            setImgLinks([...imgLinks, url]);
           });
         }
       );
@@ -193,7 +199,8 @@ const AddProduct = () => {
                           </span>
                         </div>
                         <div class="blockquote-footer mt-1 mb-0 text-danger">
-                          10% of the unit price from an item goes to Go Green super market
+                          10% of the unit price from an item goes to Go Green
+                          super market
                         </div>
                       </div>
                       <div class="col-12">

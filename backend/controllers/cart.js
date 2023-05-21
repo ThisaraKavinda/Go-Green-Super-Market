@@ -10,6 +10,7 @@ export const addCart = async (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 
@@ -20,6 +21,7 @@ export const getAllCarts = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).send({ status: "Error with deleting item" });
     });
 };
 
