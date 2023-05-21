@@ -2,49 +2,50 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const CompanySchema = new Schema({
-  name: {
+const CartSchema = new Schema({
+  productId: {
     required: true,
     type: String,
   },
-  type: {
+  productName: {
     required: true,
     type: String,
   },
-  email: {
+  productType: {
     required: true,
     type: String,
   },
-  address: {
+  productPrice: {
     required: true,
     type: String,
   },
-  companyRepresentativeName: {
+  companyId: {
     required: true,
     type: String,
   },
-  companyRepresentativeDesignation: {
-    required: true,
-    type: String,
-  },
-  companyRepresentativeEmail: {
-    type: String,
-  },
-  companyRepresentativeMobile: {
-    required: true,
-    type: String,
-  },
-  comments: {
-    type: String,
-  },
-  joinedDate: {
+  companyName: {
     type: String,
     required: true,
   },
-  type: {
-    type: String,
+  quantity: {
     required: true,
+    type: String,
+  },
+  buyerId: {
+    required: true,
+    type: String,
+  },
+  buyerName: {
+    required: true,
+    type: String,
+  },
+  buyerEmail: {
+    required: true,
+    type: String,
+  },
+  image: {
+    type: String,
   },
 });
 
-export const Company = mongoose.model("companies", CompanySchema);
+export const Cart = mongoose.model("cart", CartSchema);

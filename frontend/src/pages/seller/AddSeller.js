@@ -125,12 +125,12 @@ const AddSeller = () => {
                       </div>
                       <div class="col-12">
                         <label for="type" class="form-label">
-                          Type
+                          Category
                         </label>
                         <select
                           class="form-select"
                           aria-label="Default select example"
-                          name="type"
+                          name="category"
                           onChange={(e) => handleChange(e)}
                         >
                           <option value="Bakery">Bakery</option>

@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Test from "./pages/Test";
 import Login from "./pages/Login";
-import Signin from "./pages/Signin";
+import Register from "./pages/Register";
 
 // Product
 import AddProduct from "./pages/product/AddProduct";
@@ -27,6 +27,9 @@ import AddVehicle from "./pages/vehicle/AddVehicle";
 import Vehicles from "./pages/vehicle/Vehicles";
 import EditVehicle from "./pages/vehicle/EditVehicle";
 
+import BuyerHome from "./pages/buyer/BuyerHome";
+import Cart from "./pages/buyer/Cart";
+
 function App() {
   return (
     <BrowserRouter>
@@ -34,7 +37,7 @@ function App() {
       <Routes>
         <Route exact path="/t" element={<Test />} />
         <Route exact path="/login" element={<Login />} />
-        <Route exact path="/register" element={<Signin />} />
+        <Route exact path="/register" element={<Register />} />
 
         {/* Product */}
         <Route exact path="/addProduct" element={<AddProduct />} />
@@ -52,6 +55,10 @@ function App() {
         <Route exact path="/addVehicle" element={<AddVehicle />} />
         <Route exact path="/vehicles" element={<Vehicles />} />
         <Route exact path="/editVehicle/:id" element={<EditVehicle />} />
+
+        <Route exact path="/" element={<BuyerHome />} />
+        <Route exact path="/signin" element={<BuyerHome />} />
+        <Route exact path="/cart/:id" element={<Cart />} />
 
 
       </Routes>

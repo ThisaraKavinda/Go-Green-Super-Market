@@ -129,21 +129,6 @@ const AddProduct = () => {
                           required
                           name="specificName"
                         />
-                        {/* <input
-                          type="text"
-                          className={`form-control ${
-                            true ? "is-valid" : "is-invalid"
-                          }`}
-                          id="specificName"
-                          onChange={handleChange}
-                          placeholder="Name"
-                          required
-                          name="specificName"
-                        /> */}
-                        {/* <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">
-                          Please provide a valid city.
-                        </div> */}
                       </div>
                       <div class="col-12">
                         <label for="genericName" class="form-label">
@@ -208,7 +193,7 @@ const AddProduct = () => {
                           </span>
                         </div>
                         <div class="blockquote-footer mt-1 mb-0 text-danger">
-                          10% of the unit price from an item goes to NiceAdmin
+                          10% of the unit price from an item goes to Go Green super market
                         </div>
                       </div>
                       <div class="col-12">

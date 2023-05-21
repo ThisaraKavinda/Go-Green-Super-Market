@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import swal from "sweetalert2";
-import { loginUser } from "../controllers/user";
+import { loginUser, loginSeller, loginAdmin } from "../controllers/user";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [type, setType] = useState("customer");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,34 +21,110 @@ const Login = () => {
       swal.fire("Fill all fields", "Please enter a password", "warning");
       return;
     } else {
-      const userCredential = await signInWithEmailAndPassword(auth, email, pass)
-        .catch((err) => {
+      if (type === "admin") {
+        if (email !== "admin@gmail.com" || pass !== "123456") {
           swal.fire(
             "Error occurred",
-            "Error occurred while we trying to authenticate you. please try again",
+            "Username or password mismatched. please try again",
             "error"
           );
           return;
-        })
-        .then(() => {
-          loginUser(email)
-            .then((res) => {
-              swal.fire(
-                "Successfully Logged in",
-                "User successfully logged",
-                "success"
-              );
-              navigate("/productDashboard");
-            })
-            .catch((err) => {
-              swal.fire(
-                "Error occurred",
-                "Error occurred while we trying to log you. please try again",
-                "error"
-              );
-              return;
-            });
-        });
+        } else {
+          loginAdmin()
+        }
+      } else {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          pass
+        )
+          .then(() => {
+            if (type === "customer") {
+              loginUser(email)
+                .then((res) => {
+                  swal.fire(
+                    "Successfully Logged in",
+                    "User successfully logged",
+                    "success"
+                  );
+                  navigate("/");
+                })
+                .catch((err) => {
+                  swal.fire(
+                    "Error occurred",
+                    "Error occurred while we trying to log you. please try again",
+                    "error"
+                  );
+                  return;
+                });
+            } else {
+              loginSeller(email)
+                .then((res) => {
+                  swal.fire(
+                    "Successfully Logged in",
+                    "User successfully logged",
+                    "success"
+                  );
+                  navigate("/productDashboard");
+                })
+                .catch((err) => {
+                  swal.fire(
+                    "Error occurred",
+                    "Error occurred while we trying to log you. please try again",
+                    "error"
+                  );
+                  return;
+                });
+            }
+          })
+          .catch((err) => {
+            swal.fire(
+              "Error occurred",
+              "Error occurred while we trying to authenticate you. please try again",
+              "error"
+            );
+            return;
+          })
+          .then(() => {
+            if (type === "customer") {
+              loginUser(email)
+                .then((res) => {
+                  swal.fire(
+                    "Successfully Logged in",
+                    "User successfully logged",
+                    "success"
+                  );
+                  navigate("/");
+                })
+                .catch((err) => {
+                  swal.fire(
+                    "Error occurred",
+                    "Error occurred while we trying to log you. please try again",
+                    "error"
+                  );
+                  return;
+                });
+            } else {
+              loginSeller(email)
+                .then((res) => {
+                  swal.fire(
+                    "Successfully Logged in",
+                    "User successfully logged",
+                    "success"
+                  );
+                  navigate("/productDashboard");
+                })
+                .catch((err) => {
+                  swal.fire(
+                    "Error occurred",
+                    "Error occurred while we trying to log you. please try again",
+                    "error"
+                  );
+                  return;
+                });
+            }
+          });
+      }
     }
   };
 
@@ -62,7 +139,7 @@ const Login = () => {
                 class="logo d-flex align-items-center w-auto"
               >
                 <img src="assets/img/logo.png" alt="" />
-                <span class="d-none d-lg-block">NiceAdmin</span>
+                <span class="d-none d-lg-block">Go-Green</span>
               </a>
             </div>
 
@@ -119,6 +196,27 @@ const Login = () => {
                   </div>
 
                   <div class="col-12">
+                    <label for="type" class="form-label">
+                      Type
+                    </label>
+                    <div class="input-group has-validation">
+                      <select
+                        name="type"
+                        class="form-select"
+                        aria-label="Default select example"
+                        id="type"
+                        onChange={(e) => setType(e.target.value)}
+                      >
+                        <option value="customer" selected>
+                          Customer
+                        </option>
+                        <option value="seller">Seller</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
                     <div class="form-check">
                       <input
                         class="form-check-input"
@@ -140,7 +238,9 @@ const Login = () => {
                   <div class="col-12">
                     <p class="small mb-0">
                       Don't have account?{" "}
-                      <a href="pages-register.html">Create an account</a>
+                      <Link to={"/register"}>
+                        <a href="pages-register.html">Create an account</a>
+                      </Link>
                     </p>
                   </div>
                 </form>

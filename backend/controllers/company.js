@@ -19,6 +19,7 @@ export const addCompany = async (req, res) => {
   let newCompany = new Company({
     ...req.body,
     joinedDate: new Date().toISOString(),
+    type: "seller",
   });
 
   newCompany = await newCompany
@@ -128,5 +129,21 @@ export const getCompany = async (req, res) => {
     .catch((errr) => {
       console.log(errr.message);
       res.status(500).send({ status: "Error with deleting item" });
+    });
+};
+
+export const findSellerByEmail = async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  const email = req.params.email;
+  Company.findOne({ email: email })
+    .then((user) => {
+      if (user) res.status(200).send(user);
+      else res.status(500).json({ error: "use not found" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: err });
     });
 };

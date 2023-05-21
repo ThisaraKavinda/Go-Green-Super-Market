@@ -120,15 +120,15 @@ const EditSeller = () => {
                         <div class="valid-feedback">Looks good!</div>
                       </div>
                       <div class="col-12">
-                        <label for="type" class="form-label">
-                          Type
+                        <label for="category" class="form-label">
+                          Category
                         </label>
                         <select
                           class="form-select"
                           aria-label="Default select example"
-                          name="type"
+                          name="category"
                           onChange={(e) => handleChange(e)}
-                          value={item?.type}
+                          value={item?.category}
                         >
                           <option value="Bakery">Bakery</option>
                           <option value="Beverage">Beverage</option>

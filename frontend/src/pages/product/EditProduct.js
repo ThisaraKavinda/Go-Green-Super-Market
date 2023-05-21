@@ -206,7 +206,7 @@ const EditProduct = () => {
                           </span>
                         </div>
                         <div class="blockquote-footer mt-1 mb-0 text-danger">
-                          10% of the unit price from an item goes to NiceAdmin
+                          10% of the unit price from an item goes to Go Green super market
                         </div>
                       </div>
                       <div class="col-12">

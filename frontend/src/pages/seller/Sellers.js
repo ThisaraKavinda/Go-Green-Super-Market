@@ -35,7 +35,7 @@ const Sellers = () => {
       setFilteredList(productList);
     } else {
       setFilteredList(
-        productList.filter((product) => product?.type === e.target.value)
+        productList.filter((product) => product?.category === e.target.value)
       );
     }
   };
