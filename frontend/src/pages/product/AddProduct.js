@@ -46,7 +46,7 @@ const AddProduct = () => {
           console.log(error);
         },
         async () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
             console.log(url);
             setImgLinks([...imgLinks, url]);
           });
@@ -60,6 +60,7 @@ const AddProduct = () => {
           "Product images successfully uploaded",
           "success"
         );
+        console.log(imgLinks);
         addProduct({ ...item, images: imgLinks })
           .then((res) => {
             swal.fire(
