@@ -112,7 +112,7 @@ const Login = () => {
                     "User successfully logged",
                     "success"
                   );
-                  navigate("/productDashboard");
+                  navigate("/products");
                 })
                 .catch((err) => {
                   swal.fire(

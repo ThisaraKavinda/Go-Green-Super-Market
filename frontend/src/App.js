@@ -29,6 +29,8 @@ import EditVehicle from "./pages/vehicle/EditVehicle";
 
 import BuyerHome from "./pages/buyer/BuyerHome";
 import Cart from "./pages/buyer/Cart";
+import CheckOut from "./pages/buyer/CheckOut";
+import ViewOrders from "./pages/buyer/viewOrders";
 
 function App() {
   return (
@@ -59,6 +61,8 @@ function App() {
         <Route exact path="/" element={<BuyerHome />} />
         <Route exact path="/signin" element={<BuyerHome />} />
         <Route exact path="/cart/:id" element={<Cart />} />
+        <Route exact path="/checkout/:id" element={<CheckOut />} />
+        <Route exact path="/orders" element={<ViewOrders />} />
 
 
       </Routes>

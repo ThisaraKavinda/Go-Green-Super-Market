@@ -304,7 +304,10 @@ const Cart = () => {
                               </div>
                             </td>
                             <td class="table-action">
-                              <button class="btn btn-danger btn-pill" onClick={() => handleDeleteCart(item._id)}>
+                              <button
+                                class="btn btn-danger btn-pill"
+                                onClick={() => handleDeleteCart(item._id)}
+                              >
                                 Delete
                               </button>
                             </td>
@@ -313,6 +316,27 @@ const Cart = () => {
                       ))}
                     </div>
                   </div>
+                </div>
+                <div>
+                  <button
+                    class="btn btn-success btn-pill"
+                    onClick={() => {
+                      let price = 0;
+                      filteredList.forEach((item) => {
+                        price += Number(item.quantity) *
+                        Number(item.productPrice) 
+                      })
+                      navigate(`/checkout/${userId}`,  {
+                        state: {
+                          numOfItem: filteredList?.length,
+                          price,
+                          items: filteredList.map((item) => item.productName)
+                        }
+                      })
+                    }}
+                  >
+                    Checkout
+                  </button>
                 </div>
               </div>
             </div>
