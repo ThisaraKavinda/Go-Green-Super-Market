@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../componants/Layout/Layout";
-// import Navbar from "../../componants/NavBar";
-// import "../../assests/css/modern.css";
-// import "../../js/app.js";
-// import './F_M_Dashboard.css';
+import { Line , PolarArea, Bar} from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
+import {CategoryScale} from 'chart.js';
 
-// import { Line , PolarArea, Bar} from 'react-chartjs-2';
-// import Chart from 'chart.js/auto';
-// import {CategoryScale} from 'chart.js';
-// import pattern from 'patternomaly';
-// import { Sugar } from 'react-preloaders2';
-// import swal from 'sweetalert';
 
 import orderFood from "../../assests/images/fmOrderFood.png";
 import ordersImage from "../../assests/images/fmOrders.png";
@@ -24,6 +17,8 @@ import boxImage from "../../assests/images/fmBox.png";
 import fastFoodImage from "../../assests/images/fmFastfood.png";
 
 export default function ProductDashboard() {
+  const navigate = useNavigate();
+  Chart.register(CategoryScale);
   return (
     <React.Fragment>
       <Layout>
@@ -33,14 +28,14 @@ export default function ProductDashboard() {
             <main class="content">
               <div class="container-fluid">
                 <div class="pagetitle">
-                  <h1>Product Dashboard</h1>
+                  <h1>Admin Dashboard</h1>
                   <nav>
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item">
                         <a href="index.html">Home</a>
                       </li>
                       <li class="breadcrumb-item">Products</li>
-                      <li class="breadcrumb-item active">Product Dashboard</li>
+                      <li class="breadcrumb-item active">Admin Dashboard</li>
                     </ol>
                   </nav>
                 </div>
@@ -52,10 +47,10 @@ export default function ProductDashboard() {
                       <div class="row">
                         <div class="col-md-7 px-5">
                           <div class="row fs-2">
-                            <h3 class="mb-2">Hello Thisara!</h3>
+                            <h3 class="mb-2">Hello!</h3>
                           </div>
                           <div class="row fs-6">
-                            <h5 class="mb-0">Food & Beverage Manager</h5>
+                            <h5 class="mb-0">Administrator</h5>
                           </div>
                           <div class="row">
                             <p class="mb-2">Login Time: 06:56pm </p>
@@ -77,6 +72,7 @@ export default function ProductDashboard() {
                                   backgroundColor: "#2E4765",
                                 }}
                                 id="makeOrder"
+                                onClick={() => navigate("/addSeller")}
                               >
                                 <div class="col-3">
                                   <img
@@ -85,7 +81,7 @@ export default function ProductDashboard() {
                                   ></img>
                                 </div>
                                 <div class="col-6 mx-3 d-flex justify-content-center align-items-center fw-semibold fs-4 px-3 text-white">
-                                  <p>Make an Order</p>
+                                  <p>Add a seller</p>
                                 </div>
                               </div>
                             </a>
@@ -218,13 +214,14 @@ export default function ProductDashboard() {
                       <div class="card-body" style={{ margin: "0px" }}>
                         <div class="row mx-0 d-flex justify-content-between align-items-center mb-4">
                           <div class="col-8">
-                            <p class="mb-0 fw-semibold">Food & Beverages</p>
+                            <p class="mb-0 fw-semibold">Products</p>
                           </div>
                           <div class="col-auto">
                             <button
                               type="button"
                               class="btn text-white fw-semibold"
                               style={{ backgroundColor: "#2E4765" }}
+                              onClick={(e) => navigate("/products")}
                             >
                               See All
                             </button>

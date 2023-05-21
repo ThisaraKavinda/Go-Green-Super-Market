@@ -14,6 +14,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log(e);
     if (email === "") {
       swal.fire("Fill all fields", "Please enter the email", "warning");
       return;
@@ -30,7 +31,13 @@ const Login = () => {
           );
           return;
         } else {
-          loginAdmin()
+          loginAdmin();
+          swal.fire(
+            "Successfully Logged in",
+            "Admin successfully logged",
+            "success"
+          );
+          navigate("/productDashboard");
         }
       } else {
         const userCredential = await signInWithEmailAndPassword(

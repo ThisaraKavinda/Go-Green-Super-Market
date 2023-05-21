@@ -72,6 +72,13 @@ const SideBar = () => {
                   </li>
 
                   <li class="nav-item">
+                    <a class="nav-link collapsed" href="/orders">
+                      <i class="bi bi-archive"></i>
+                      <span>Orders</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
                     <a class="nav-link collapsed" href="/productReport">
                       <i class="bi bi-list-check"></i>
                       <span>Reports</span>
