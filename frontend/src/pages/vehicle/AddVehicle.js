@@ -17,7 +17,7 @@ const AddVehicle = () => {
   };
 
   const handleAddItem = () => {
-    addVehicle({...item, isAvailable: true})
+    addVehicle({ ...item, isAvailable: true })
       .then((res) => {
         swal.fire(
           "Successfully added",
@@ -91,29 +91,30 @@ const AddVehicle = () => {
                         >
                           <option value="Car">Car</option>
                           <option value="Van">Van</option>
-                          <option value="Lorry">
-                            Lorry
-                          </option>
-                          <option value="Three wheel">
-                            Three wheel
-                          </option>
+                          <option value="Lorry">Lorry</option>
+                          <option value="Three wheel">Three wheel</option>
                         </select>
 
                         <div class="valid-feedback">Looks good!</div>
                       </div>
                       <div class="col-12">
                         <label for="numOfSeats" class="form-label">
-                          Number of seats
+                          Capacity
                         </label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          id="numOfSeats"
-                          placeholder="Number of seats"
-                          required
-                          name="numOfSeats"
-                          onChange={handleChange}
-                        />
+                        <div class="input-group mb-3">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="numOfSeats"
+                            placeholder="Number of seats"
+                            required
+                            name="numOfSeats"
+                            onChange={handleChange}
+                          />
+                          <span class="input-group-text" id="basic-addon2">
+                            KG
+                          </span>
+                        </div>
                         <div class="invalid-feedback">
                           Please provide a valid city.
                         </div>
@@ -141,7 +142,7 @@ const AddVehicle = () => {
                       </div>
                       <div class="col-12">
                         <label for="driver" class="form-label">
-                        Driver
+                          Driver
                         </label>
                         <input
                           type="text"

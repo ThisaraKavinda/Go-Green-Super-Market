@@ -191,7 +191,7 @@ const Vehicles = () => {
                         <tr>
                           <th>Vehicle Number</th>
                           <th>Type</th>
-                          <th>No. of seats</th>
+                          <th>Capacity</th>
                           <th>Driver</th>
                           <th>Action</th>
                         </tr>
@@ -202,7 +202,7 @@ const Vehicles = () => {
                             <tr key={index}>
                               <td>{value.number}</td>
                               <td>{value.type}</td>
-                              <td>{value.numOfSeats}</td>
+                              <td>{value.numOfSeats}kg</td>
                               <td>{value.driver}</td>
                               <td class="table-action">
                                 {/* <Link
@@ -274,7 +274,7 @@ const Vehicles = () => {
                                       Type: {item?.type}
                                     </li>
                                     <li class="list-group-item">
-                                      Number of seats: {item?.numOfSeats}
+                                      Capacity: {item?.numOfSeats}kg
                                     </li>
                                     <li class="list-group-item">
                                       Driver: {item?.driver}

@@ -59,146 +59,147 @@ const EditVehicle = () => {
 
   return (
     <>
-    <Layout>
-      <div>
-        <div class="pagetitle">
-          <h1>Add Vehicle</h1>
-          <nav>
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <a href="index.html">Home</a>
-              </li>
-              <li class="breadcrumb-item">Vehicle</li>
-              <li class="breadcrumb-item active">Add Vehicle</li>
-            </ol>
-          </nav>
-        </div>
-        <section class="section">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Fill this form to add a vehicle</h5>
-                  <form
-                    class="row g-3 needs-validation"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      handleEditItem();
-                    }}
-                  >
-                    <div class="col-12">
-                      <label for="number" class="form-label">
-                        Vehicle Number
-                      </label>
-                      <input
-                        type="text"
-                        className={`form-control`}
-                        id="number"
-                        onChange={handleChange}
-                        placeholder="Vehicle Number"
-                        required
-                        name="number"
-                        value={item?.number}
-                      />
-                    </div>
-                    <div class="col-12">
-                      <label for="type" class="form-label">
-                        Vehicle Type
-                      </label>
-                      <select
-                        class="form-select"
-                        aria-label="Default select example"
-                        name="type"
-                        onChange={handleChange}
-                        value={item?.type}
-                      >
-                        <option value="Car">Car</option>
-                        <option value="Van">Van</option>
-                        <option value="Lorry">
-                          Lorry
-                        </option>
-                        <option value="Three wheel">
-                          Three wheel
-                        </option>
-                      </select>
-
-                      <div class="valid-feedback">Looks good!</div>
-                    </div>
-                    <div class="col-12">
-                      <label for="numOfSeats" class="form-label">
-                        Number of seats
-                      </label>
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="numOfSeats"
-                        placeholder="Number of seats"
-                        required
-                        name="numOfSeats"
-                        onChange={handleChange}
-                        value={item?.numOfSeats}
-                      />
-                      <div class="invalid-feedback">
-                        Please provide a valid city.
+      <Layout>
+        <div>
+          <div class="pagetitle">
+            <h1>Add Vehicle</h1>
+            <nav>
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">Vehicle</li>
+                <li class="breadcrumb-item active">Add Vehicle</li>
+              </ol>
+            </nav>
+          </div>
+          <section class="section">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Fill this form to add a vehicle</h5>
+                    <form
+                      class="row g-3 needs-validation"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handleEditItem();
+                      }}
+                    >
+                      <div class="col-12">
+                        <label for="number" class="form-label">
+                          Vehicle Number
+                        </label>
+                        <input
+                          type="text"
+                          className={`form-control`}
+                          id="number"
+                          onChange={handleChange}
+                          placeholder="Vehicle Number"
+                          required
+                          name="number"
+                          value={item?.number}
+                        />
                       </div>
-                    </div>
-                    <div class="col-12">
-                      <label for="pricePerKM" class="form-label">
-                        Price per KM
-                      </label>
-                      <div class="input-group mb-3">
+                      <div class="col-12">
+                        <label for="type" class="form-label">
+                          Vehicle Type
+                        </label>
+                        <select
+                          class="form-select"
+                          aria-label="Default select example"
+                          name="type"
+                          onChange={handleChange}
+                          value={item?.type}
+                        >
+                          <option value="Car">Car</option>
+                          <option value="Van">Van</option>
+                          <option value="Lorry">Lorry</option>
+                          <option value="Three wheel">Three wheel</option>
+                        </select>
+
+                        <div class="valid-feedback">Looks good!</div>
+                      </div>
+                      <div class="col-12">
+                        <label for="numOfSeats" class="form-label">
+                          Capacity
+                        </label>
+                        <div class="input-group mb-3">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="numOfSeats"
+                            placeholder="Number of seats"
+                            required
+                            name="numOfSeats"
+                            onChange={handleChange}
+                            value={item?.numOfSeats}
+                          />
+                          <span class="input-group-text" id="basic-addon2">
+                            KG
+                          </span>
+                        </div>
+                        <div class="invalid-feedback">
+                          Please provide a valid city.
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <label for="pricePerKM" class="form-label">
+                          Price per KM
+                        </label>
+                        <div class="input-group mb-3">
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Price per KM"
+                            aria-label="Unit price"
+                            aria-describedby="basic-addon2"
+                            id="pricePerKM"
+                            name="pricePerKM"
+                            onChange={handleChange}
+                            required
+                            value={item?.pricePerKM}
+                          />
+                          <span class="input-group-text" id="basic-addon2">
+                            .00 LKR
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <label for="driver" class="form-label">
+                          Driver
+                        </label>
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Price per KM"
-                          aria-label="Unit price"
-                          aria-describedby="basic-addon2"
-                          id="pricePerKM"
-                          name="pricePerKM"
-                          onChange={handleChange}
+                          id="driver"
+                          placeholder="Driver"
                           required
-                          value={item?.pricePerKM}
+                          name="driver"
+                          onChange={handleChange}
+                          value={item?.driver}
                         />
-                        <span class="input-group-text" id="basic-addon2">
-                          .00 LKR
-                        </span>
+                        <div class="invalid-feedback">
+                          Please provide a valid city.
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-12">
-                      <label for="driver" class="form-label">
-                      Driver
-                      </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="driver"
-                        placeholder="Driver"
-                        required
-                        name="driver"
-                        onChange={handleChange}
-                        value={item?.driver}
-                      />
-                      <div class="invalid-feedback">
-                        Please provide a valid city.
-                      </div>
-                    </div>
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary mx-4">
-                        Submit
-                      </button>
-                      {/* <button type="reset" class="btn btn-secondary">
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-primary mx-4">
+                          Submit
+                        </button>
+                        {/* <button type="reset" class="btn btn-secondary">
                         Reset
                       </button> */}
-                    </div>
-                  </form>
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      </div>
-    </Layout>
-  </>
+          </section>
+        </div>
+      </Layout>
+    </>
   );
 };
 
