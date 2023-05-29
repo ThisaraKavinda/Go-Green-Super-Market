@@ -3,6 +3,8 @@ import Layout from "../../componants/Layout/Layout";
 import { Link } from "react-router-dom";
 import swal from "sweetalert2";
 import { getAllVehicles, deleteVehicle } from "../../controllers/vehicle";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const Vehicles = () => {
   const [productList, setProductList] = useState([]);
@@ -89,6 +91,57 @@ const Vehicles = () => {
           });
         }
       });
+  };
+
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    doc.setDrawColor(8, 30, 61);
+    doc.setLineWidth(80);
+    doc.line(0, 0, 1000, 0);
+
+    doc.setFontSize("22");
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Go-Green supermarket", 65, 12);
+
+    doc.setFontSize("18");
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Vehicle List", 82, 20);
+    //
+    doc.setFontSize("12");
+    doc.setFont("Helvertica", "Normal");
+    doc.text("Report generated on: ", 68, 27);
+    doc.setFontSize("12");
+    doc.setFont("Helvertica", "bold");
+    doc.text(
+      new Date().toISOString().substring(0, 10) +
+        " " +
+        new Date().toLocaleTimeString("en-US"),
+      105,
+      27
+    );
+
+    doc.setFontSize("10");
+    doc.setFont("Helvertica", "bold");
+    doc.text("Total Vehicles", 14, 35);
+    doc.setFontSize("10");
+    doc.setFont("Helvertica", "Normal");
+    doc.text(":  " + productList.length, 45, 35);
+
+    doc.autoTable({
+      theme: "grid",
+      head: [["Vehicle Number", "Type", "Capacity", "Driver", "Price per KM"]],
+      body: productList.map((product) => [
+        [product.number],
+        [product.type],
+        [product.numOfSeats],
+        [product.driver],
+        ["Rs. " + product.pricePerKM + ".00"],
+      ]),
+      margin: { top: 65 },
+    });
+    doc.save("vehicleList(" + new Date().toISOString() + ").pdf");
   };
 
   return (
@@ -266,8 +319,7 @@ const Vehicles = () => {
                                 ></button>
                               </div>
                               <div class="modal-body">
-                                <div class="mb-2 d-flex justify-content-center">
-                                </div>
+                                <div class="mb-2 d-flex justify-content-center"></div>
                                 <div class="my-3">
                                   <ul class="list-group">
                                     <li class="list-group-item">
@@ -292,6 +344,15 @@ const Vehicles = () => {
                           </div>
                         </div>
                       </tbody>
+                      <div class="mt-4">
+                        <button
+                          class="btn  btn-primary"
+                          style={{ marginBottom: 25 }}
+                          onClick={downloadPDF}
+                        >
+                          Download PDF
+                        </button>
+                      </div>
                     </table>
                   </div>
                 </div>

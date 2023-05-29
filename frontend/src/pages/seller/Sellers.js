@@ -3,6 +3,8 @@ import Layout from "../../componants/Layout/Layout";
 import { Link } from "react-router-dom";
 import swal from "sweetalert2";
 import { getAllSellers, deleteSeller } from "../../controllers/seller";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const Sellers = () => {
   const [productList, setProductList] = useState([]);
@@ -95,6 +97,67 @@ const Sellers = () => {
           });
         }
       });
+  };
+
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    doc.setDrawColor(8, 30, 61);
+    doc.setLineWidth(80);
+    doc.line(0, 0, 1000, 0);
+
+    doc.setFontSize("22");
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Go-Green supermarket", 65, 12);
+
+    doc.setFontSize("18");
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Sellers List", 88, 20);
+    //
+    doc.setFontSize("12");
+    doc.setFont("Helvertica", "Normal");
+    doc.text("Report generated on: ", 68, 27);
+    doc.setFontSize("12");
+    doc.setFont("Helvertica", "bold");
+    doc.text(
+      new Date().toISOString().substring(0, 10) +
+        " " +
+        new Date().toLocaleTimeString("en-US"),
+      105,
+      27
+    );
+
+    doc.setFontSize("10");
+    doc.setFont("Helvertica", "bold");
+    doc.text("Total sellers", 14, 35);
+    doc.setFontSize("10");
+    doc.setFont("Helvertica", "Normal");
+    doc.text(":  " + productList.length, 45, 35);
+
+    doc.autoTable({
+      theme: "grid",
+      head: [
+        [
+          "Company name",
+          "Type",
+          "Email",
+          "Address",
+          "Representative name",
+          "Representative mobile",
+        ],
+      ],
+      body: productList.map((product) => [
+        [product.name],
+        [product.type],
+        [product.email],
+        [product.address],
+        [product.companyRepresentativeName],
+        [product.companyRepresentativeMobile],
+      ]),
+      margin: { top: 65 },
+    });
+    doc.save("productList(" + new Date().toISOString() + ").pdf");
   };
 
   return (
@@ -262,6 +325,15 @@ const Sellers = () => {
                           <p>No items to display</p>
                         )}
                       </tbody>
+                      <div class="mt-4">
+                        <button
+                          class="btn  btn-primary"
+                          style={{ marginBottom: 25 }}
+                          onClick={downloadPDF}
+                        >
+                          Download PDF
+                        </button>
+                      </div>
                     </table>
                   </div>
                 </div>
